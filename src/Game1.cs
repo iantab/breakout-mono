@@ -46,7 +46,7 @@ public class Game1 : Game
         _paddle = new Paddle(new Vector2(
             VirtualWidth / 2 - 48, VirtualHeight - 32));
         _ball = new Ball(new Vector2(
-            VirtualWidth / 2 - 6, VirtualHeight / 2));
+            VirtualWidth / 2, VirtualHeight / 2));
     }
 
     protected override void Update(GameTime gameTime)
@@ -65,7 +65,7 @@ public class Game1 : Game
         
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
         _paddle.Draw(_spriteBatch, _pixel);
-        _ball.Draw(_spriteBatch, _pixel);
+        _ball.Draw(_spriteBatch);
         _spriteBatch.End();
 
         GraphicsDevice.SetRenderTarget(null);

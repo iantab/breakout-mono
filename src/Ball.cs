@@ -1,24 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended;
 
 namespace breakout_mono;
 
 public class Ball
 {
     public Vector2 Position;
-    public Vector2 Size = new(12, 12);
+    public float Radius = 6f;
     public Color Color = new(255, 102, 102);
     public Vector2 Velocity;
-    
-    public Rectangle Bounds => new((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
+
+    public Rectangle Bounds => new(
+        (int)(Position.X - Radius), (int)(Position.Y - Radius),
+        (int)(Radius * 2), (int)(Radius * 2));
 
     public Ball(Vector2 startPosition)
     {
         Position = startPosition;
     }
-    
-    public void Draw(SpriteBatch sb, Texture2D pixel)
+
+    public void Draw(SpriteBatch sb)
     {
-        sb.Draw(pixel, Bounds, Color);
+        sb.DrawCircle(Position, Radius, sides: 16,
+            color: Color, thickness: Radius);
     }
 }
