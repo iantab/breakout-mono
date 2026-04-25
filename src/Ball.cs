@@ -68,4 +68,24 @@ public class Ball
     {
         sb.DrawCircle(Position, Radius, sides: 16, color: Color, thickness: Radius);
     }
+
+    public bool TryBouncePaddle(Paddle paddle)
+    {
+        if (!Bounds.Intersects(paddle.Bounds)) return false;
+
+        if (Velocity.Y < 0) return false;
+
+        float paddleCenterX = paddle.Position.X + paddle.Size.X / 2f;
+        float offsetX = (Position.X - paddleCenterX) / (paddle.Size.X / 2f);
+        offsetX = System.Math.Clamp(offsetX, -1f, 1f);
+
+        float speed = Velocity.Length();
+        float maxAngle = MathHelper.ToRadians(60f);
+        float angle = offsetX * maxAngle;
+        Velocity = new Vector2(
+            (float)System.Math.Sin(angle), -(float)System.Math.Cos(angle)) * speed;
+
+        Position.Y = paddle.Position.Y - Radius;
+        return true;
+    }
 }
