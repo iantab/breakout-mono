@@ -1,0 +1,62 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
+namespace Breakout;
+
+public class Game1 : Game
+{
+    public const int VirtualWidth = 640;
+    public const int VirtualHeight = 360;
+
+    private GraphicsDeviceManager _graphics;
+    private SpriteBatch _spriteBatch;
+    private RenderTarget2D _virtualTarget;
+
+    public Game1()
+    {
+        _graphics = new GraphicsDeviceManager(this);
+        Content.RootDirectory = "Content";
+        IsMouseVisible = true;
+    }
+
+    protected override void Initialize()
+    {
+        _virtualTarget = new RenderTarget2D(
+            GraphicsDevice, VirtualWidth, VirtualHeight);
+        base.Initialize();
+    }
+
+    protected override void LoadContent()
+    {
+        _spriteBatch = new SpriteBatch(GraphicsDevice);
+    }
+
+    protected override void Update(GameTime gameTime)
+    {
+        if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            Exit();
+        base.Update(gameTime);
+    }
+
+    protected override void Draw(GameTime gameTime)
+    {
+        GraphicsDevice.SetRenderTarget(_virtualTarget);
+        GraphicsDevice.Clear(new Color(20,22,39));
+        
+        _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+        
+        _spriteBatch.End();
+        
+        GraphicsDevice.SetRenderTarget(null);
+        GraphicsDevice.Clear(Color.Black);
+
+        int bw = GraphicsDevice.PresentationParameters.BackBufferWidth;
+        int bh = GraphicsDevice.PresentationParameters.BackBufferHeight;
+        
+        _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+        _spriteBatch.Draw(_virtualTarget, new Rectangle(0,0,bw,bh), Color.White);
+        _spriteBatch.End();
+        base.Draw(gameTime);
+    }
+}
