@@ -51,6 +51,7 @@ public class Game1 : Game
 
         float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
         _paddle.Update(delta, VirtualWidth);
+        _ball.Update(delta, VirtualWidth, VirtualHeight);
 
         base.Update(gameTime);
     }
