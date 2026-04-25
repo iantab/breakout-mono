@@ -24,12 +24,19 @@
 
   <ItemGroup>
     <Compile Include="Pages\Index.razor.cs" />
-    <Compile Include="src\Ball.cs" />
-    <Compile Include="src\Brick.cs" />
     <Compile Include="src\Game1.cs" />
+    <Compile Include="src\GameContext.cs" />
     <Compile Include="src\LevelMaker.cs" />
-    <Compile Include="src\Paddle.cs" />
     <Compile Include="src\Program.cs" />
+    <Compile Include="src\Entities\Ball.cs" />
+    <Compile Include="src\Entities\Brick.cs" />
+    <Compile Include="src\Entities\Paddle.cs" />
+    <Compile Include="src\States\State.cs" />
+    <Compile Include="src\States\StateMachine.cs" />
+    <Compile Include="src\States\ServeState.cs" />
+    <Compile Include="src\States\PlayState.cs" />
+    <Compile Include="src\States\VictoryState.cs" />
+    <Compile Include="src\States\GameOverState.cs" />
   </ItemGroup>
 
   <ItemGroup>

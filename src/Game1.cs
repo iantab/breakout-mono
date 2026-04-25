@@ -23,6 +23,8 @@ public class Game1 : Game
     private int _score;
     private int _lives = 3;
 
+    private GameContext _ctx;
+
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -40,15 +42,20 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-
         _pixel = new Texture2D(GraphicsDevice, 1, 1);
         _pixel.SetData(new[] { Color.White });
-
-        _paddle = new Paddle(new Vector2(
-            VirtualWidth / 2 - 48, VirtualHeight - 32));
-        _ball = new Ball(new Vector2(VirtualWidth / 2, VirtualHeight / 2));
-        _bricks = LevelMaker.Generate(level: 1, VirtualWidth);
         _font = Content.Load<SpriteFont>("Arcade");
+
+        _ctx = new GameContext
+        {
+            Paddle = new Paddle(new Vector2(VirtualWidth / 2 - 48, VirtualHeight - 32)),
+            Ball = new Ball(new Vector2(VirtualWidth / 2 - 6, VirtualHeight / 2)),
+            Bricks = LevelMaker.Generate(1, VirtualWidth),
+            ViewportWidth = VirtualWidth,
+            ViewportHeight = VirtualHeight,
+            Machine = new StateMachine(),
+        };
+        _ctx.Machine.ChangeState(new ServeState(_ctx));
     }
 
     protected override void Update(GameTime gameTime)
@@ -56,25 +63,8 @@ public class Game1 : Game
         if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-        _paddle.Update(delta, VirtualWidth);
-        _ball.Update(delta, VirtualWidth, VirtualHeight);
-        _ball.TryBouncePaddle(_paddle);
-        var hit = _ball.TryBounceBricks(_bricks, delta);
-        if (hit != null) _score += hit.Points;
+        _ctx.Machine.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
         base.Update(gameTime);
-        if (_ball.Position.Y > VirtualHeight)
-        {
-            _lives--;
-            if (_lives <= 0)
-            {
-                _lives = 3;
-                _score = 0;
-                _bricks = LevelMaker.Generate(1, VirtualWidth);
-            }
-
-            _ball.Serve();
-        }
     }
 
     protected override void Draw(GameTime gameTime)
@@ -83,13 +73,7 @@ public class Game1 : Game
         GraphicsDevice.Clear(new Color(20, 22, 39));
 
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-        foreach (var brick in _bricks) brick.Draw(_spriteBatch, _pixel);
-        _paddle.Draw(_spriteBatch, _pixel);
-        _ball.Draw(_spriteBatch);
-        _spriteBatch.DrawString(_font, $"Score: {_score}",
-            new Vector2(8, 8), Color.White);
-        _spriteBatch.DrawString(_font, $"Lives: {_lives}",
-            new Vector2(VirtualWidth - 100, 8), Color.White);
+        _ctx.Machine.Draw(_spriteBatch, _font, _pixel);
         _spriteBatch.End();
 
         GraphicsDevice.SetRenderTarget(null);
