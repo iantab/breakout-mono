@@ -23,11 +23,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Ball.cs" />
-    <Compile Include="Paddle.cs" />
     <Compile Include="Pages\Index.razor.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="src\Ball.cs" />
+    <Compile Include="src\Game1.cs" />
+    <Compile Include="src\Paddle.cs" />
+    <Compile Include="src\Program.cs" />
   </ItemGroup>
 
   <ItemGroup>
