@@ -23,14 +23,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Ball.cs" />
+    <Compile Include="Paddle.cs" />
     <Compile Include="Pages\Index.razor.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Game1Game.cs" />
+    <Compile Include="Game1.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="KNI.Extended" Version="5.5.1" />
-    <PackageReference Include="MonoGame.Extended" Version="5.5.1" />
     <PackageReference Include="nkast.Xna.Framework" Version="4.2.9001" />
     <PackageReference Include="nkast.Xna.Framework.Content" Version="4.2.9001" />
     <PackageReference Include="nkast.Xna.Framework.Graphics" Version="4.2.9001" />

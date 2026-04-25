@@ -12,6 +12,10 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private RenderTarget2D _virtualTarget;
+    private Texture2D _pixel;
+
+    private Paddle _paddle;
+    private Ball _ball;
 
     public Game1()
     {
@@ -30,6 +34,14 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+        _pixel = new Texture2D(GraphicsDevice, 1, 1);
+        _pixel.SetData(new[] { Color.White });
+
+        _paddle = new Paddle(new Vector2(
+            VirtualWidth / 2 - 48, VirtualHeight - 32));
+
+        _ball = new Ball(new Vector2(VirtualWidth / 2, VirtualHeight / 2));
     }
 
     protected override void Update(GameTime gameTime)
@@ -42,20 +54,21 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.SetRenderTarget(_virtualTarget);
-        GraphicsDevice.Clear(new Color(20,22,39));
-        
+        GraphicsDevice.Clear(new Color(20, 22, 39));
+
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-        
+        _paddle.Draw(_spriteBatch, _pixel);
+        _ball.Draw(_spriteBatch);
         _spriteBatch.End();
-        
+
         GraphicsDevice.SetRenderTarget(null);
         GraphicsDevice.Clear(Color.Black);
 
         int bw = GraphicsDevice.PresentationParameters.BackBufferWidth;
         int bh = GraphicsDevice.PresentationParameters.BackBufferHeight;
-        
+
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-        _spriteBatch.Draw(_virtualTarget, new Rectangle(0,0,bw,bh), Color.White);
+        _spriteBatch.Draw(_virtualTarget, new Rectangle(0, 0, bw, bh), Color.White);
         _spriteBatch.End();
         base.Draw(gameTime);
     }
