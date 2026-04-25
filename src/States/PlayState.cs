@@ -15,7 +15,7 @@ public class PlayState : State
     public override void Update(float delta)
     {
         ctx.Paddle.Update(delta, ctx.ViewportWidth);
-        ctx.Ball.Update(delta, ctx.ViewportWidth, ctx.ViewportHeight);
+        ctx.Ball.Update(delta, ctx.ViewportWidth);
         ctx.Ball.TryBouncePaddle(ctx.Paddle);
         var hit = ctx.Ball.TryBounceBricks(ctx.Bricks, delta);
         if (hit != null) ctx.Score += hit.Points;

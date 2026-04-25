@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
@@ -14,7 +15,7 @@ public class Ball
 
     private Vector2 _startPosition;
 
-    private static readonly System.Random Rng = new();
+    private static readonly Random Rng = new();
 
     public Rectangle Bounds => new(
         (int)(Position.X - Radius), (int)(Position.Y - Radius),
@@ -31,7 +32,7 @@ public class Ball
     {
         Position = _startPosition;
         float vx = Rng.Next(-300, 301);
-        if (System.Math.Abs(vx) < 80) vx = vx < 0 ? -80 : 80;
+        if (Math.Abs(vx) < 80) vx = vx < 0 ? -80 : 80;
         float vy = -Rng.Next(180, 240);
         Velocity = new Vector2(vx, vy);
     }
@@ -42,7 +43,7 @@ public class Ball
         Velocity = Vector2.Zero;
     }
 
-    public void Update(float delta, int viewportWidth, int viewportHeight)
+    public void Update(float delta, int viewportWidth)
     {
         Position += Velocity * delta;
 
@@ -77,13 +78,13 @@ public class Ball
 
         float paddleCenterX = paddle.Position.X + paddle.Size.X / 2f;
         float offsetX = (Position.X - paddleCenterX) / (paddle.Size.X / 2f);
-        offsetX = System.Math.Clamp(offsetX, -1f, 1f);
+        offsetX = Math.Clamp(offsetX, -1f, 1f);
 
         float speed = Velocity.Length();
         float maxAngle = MathHelper.ToRadians(60f);
         float angle = offsetX * maxAngle;
         Velocity = new Vector2(
-            (float)System.Math.Sin(angle), -(float)System.Math.Cos(angle)) * speed;
+            (float)Math.Sin(angle), -(float)Math.Cos(angle)) * speed;
 
         Position.Y = paddle.Position.Y - Radius;
         return true;
@@ -106,22 +107,22 @@ public class Ball
 
             if (wasAbove)
             {
-                Velocity.Y = -System.Math.Abs(Velocity.Y);
+                Velocity.Y = -Math.Abs(Velocity.Y);
                 Position.Y = brick.Bounds.Top - Radius;
             }
             else if (wasBelow)
             {
-                Velocity.Y = System.Math.Abs(Velocity.Y);
+                Velocity.Y = Math.Abs(Velocity.Y);
                 Position.Y = brick.Bounds.Bottom + Radius;
             }
             else if (wasLeft)
             {
-                Velocity.X = -System.Math.Abs(Velocity.X);
+                Velocity.X = -Math.Abs(Velocity.X);
                 Position.X = brick.Bounds.Left - Radius;
             }
             else if (wasRight)
             {
-                Velocity.X = System.Math.Abs(Velocity.X);
+                Velocity.X = Math.Abs(Velocity.X);
                 Position.X = brick.Bounds.Right + Radius;
             }
             else

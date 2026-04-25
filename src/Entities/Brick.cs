@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Breakout;
@@ -19,7 +20,7 @@ public class Brick
         new(251, 242, 54), // gold
     };
 
-    public Color Color => Palette[System.Math.Clamp(Tier, 0, Palette.Length - 1)];
+    public Color Color => Palette[Math.Clamp(Tier, 0, Palette.Length - 1)];
 
     public Rectangle Bounds =>
         new((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
