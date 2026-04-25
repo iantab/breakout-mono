@@ -1,4 +1,4 @@
-﻿using System.Net.Security;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
@@ -87,5 +87,52 @@ public class Ball
 
         Position.Y = paddle.Position.Y - Radius;
         return true;
+    }
+
+    public Brick TryBounceBricks(List<Brick> bricks, float delta)
+    {
+        var prevPos = Position - Velocity * delta;
+        var prevBounds = new Rectangle(
+            (int)(prevPos.X - Radius), (int)(prevPos.Y - Radius), (int)(Radius * 2), (int)(Radius * 2));
+
+        foreach (var brick in bricks)
+        {
+            if (brick.Destroyed || !Bounds.Intersects(brick.Bounds)) continue;
+
+            bool wasAbove = prevBounds.Bottom <= brick.Bounds.Top;
+            bool wasBelow = prevBounds.Top >= brick.Bounds.Bottom;
+            bool wasLeft = prevBounds.Right <= brick.Bounds.Left;
+            bool wasRight = prevBounds.Left >= brick.Bounds.Right;
+
+            if (wasAbove)
+            {
+                Velocity.Y = -System.Math.Abs(Velocity.Y);
+                Position.Y = brick.Bounds.Top - Radius;
+            }
+            else if (wasBelow)
+            {
+                Velocity.Y = System.Math.Abs(Velocity.Y);
+                Position.Y = brick.Bounds.Bottom + Radius;
+            }
+            else if (wasLeft)
+            {
+                Velocity.X = -System.Math.Abs(Velocity.X);
+                Position.X = brick.Bounds.Left - Radius;
+            }
+            else if (wasRight)
+            {
+                Velocity.X = System.Math.Abs(Velocity.X);
+                Position.X = brick.Bounds.Right + Radius;
+            }
+            else
+            {
+                Velocity.Y = -Velocity.Y;
+            }
+
+            brick.Destroyed = true;
+            return brick;
+        }
+
+        return null;
     }
 }

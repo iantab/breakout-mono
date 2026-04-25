@@ -18,6 +18,7 @@ public class Game1 : Game
     private Paddle _paddle;
     private Ball _ball;
     private List<Brick> _bricks;
+    private int _score;
 
     public Game1()
     {
@@ -55,6 +56,8 @@ public class Game1 : Game
         _paddle.Update(delta, VirtualWidth);
         _ball.Update(delta, VirtualWidth, VirtualHeight);
         _ball.TryBouncePaddle(_paddle);
+        var hit = _ball.TryBounceBricks(_bricks, delta);
+        if (hit != null) _score += hit.Points;
         base.Update(gameTime);
     }
 
