@@ -25,7 +25,9 @@
   <ItemGroup>
     <Compile Include="Pages\Index.razor.cs" />
     <Compile Include="src\Ball.cs" />
+    <Compile Include="src\Brick.cs" />
     <Compile Include="src\Game1.cs" />
+    <Compile Include="src\LevelMaker.cs" />
     <Compile Include="src\Paddle.cs" />
     <Compile Include="src\Program.cs" />
   </ItemGroup>

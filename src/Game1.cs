@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -16,6 +17,7 @@ public class Game1 : Game
 
     private Paddle _paddle;
     private Ball _ball;
+    private List<Brick> _bricks;
 
     public Game1()
     {
@@ -40,8 +42,8 @@ public class Game1 : Game
 
         _paddle = new Paddle(new Vector2(
             VirtualWidth / 2 - 48, VirtualHeight - 32));
-
         _ball = new Ball(new Vector2(VirtualWidth / 2, VirtualHeight / 2));
+        _bricks = LevelMaker.Generate(level: 1, VirtualWidth);
     }
 
     protected override void Update(GameTime gameTime)
@@ -62,6 +64,7 @@ public class Game1 : Game
         GraphicsDevice.Clear(new Color(20, 22, 39));
 
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+        foreach (var brick in _bricks) brick.Draw(_spriteBatch, _pixel);
         _paddle.Draw(_spriteBatch, _pixel);
         _ball.Draw(_spriteBatch);
         _spriteBatch.End();
