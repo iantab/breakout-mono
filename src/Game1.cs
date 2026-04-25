@@ -18,7 +18,10 @@ public class Game1 : Game
     private Paddle _paddle;
     private Ball _ball;
     private List<Brick> _bricks;
+
+    private SpriteFont _font;
     private int _score;
+    private int _lives = 3;
 
     public Game1()
     {
@@ -45,6 +48,7 @@ public class Game1 : Game
             VirtualWidth / 2 - 48, VirtualHeight - 32));
         _ball = new Ball(new Vector2(VirtualWidth / 2, VirtualHeight / 2));
         _bricks = LevelMaker.Generate(level: 1, VirtualWidth);
+        _font = Content.Load<SpriteFont>("Arcade");
     }
 
     protected override void Update(GameTime gameTime)
@@ -59,6 +63,18 @@ public class Game1 : Game
         var hit = _ball.TryBounceBricks(_bricks, delta);
         if (hit != null) _score += hit.Points;
         base.Update(gameTime);
+        if (_ball.Position.Y > VirtualHeight)
+        {
+            _lives--;
+            if (_lives <= 0)
+            {
+                _lives = 3;
+                _score = 0;
+                _bricks = LevelMaker.Generate(1, VirtualWidth);
+            }
+
+            _ball.Serve();
+        }
     }
 
     protected override void Draw(GameTime gameTime)
@@ -70,6 +86,10 @@ public class Game1 : Game
         foreach (var brick in _bricks) brick.Draw(_spriteBatch, _pixel);
         _paddle.Draw(_spriteBatch, _pixel);
         _ball.Draw(_spriteBatch);
+        _spriteBatch.DrawString(_font, $"Score: {_score}",
+            new Vector2(8, 8), Color.White);
+        _spriteBatch.DrawString(_font, $"Lives: {_lives}",
+            new Vector2(VirtualWidth - 100, 8), Color.White);
         _spriteBatch.End();
 
         GraphicsDevice.SetRenderTarget(null);

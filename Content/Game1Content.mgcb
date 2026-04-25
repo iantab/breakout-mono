@@ -13,3 +13,8 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Arcade
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Arcade
+
