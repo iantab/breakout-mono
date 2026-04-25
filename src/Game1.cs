@@ -48,6 +48,10 @@ public class Game1 : Game
     {
         if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
+
+        float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+        _paddle.Update(delta, VirtualWidth);
+
         base.Update(gameTime);
     }
 
@@ -67,8 +71,26 @@ public class Game1 : Game
         int bw = GraphicsDevice.PresentationParameters.BackBufferWidth;
         int bh = GraphicsDevice.PresentationParameters.BackBufferHeight;
 
+        const float targetAspect = (float)VirtualWidth / VirtualHeight;
+        float screenAspect = (float)bw / bh;
+
+        int destW, destH;
+        if (screenAspect > targetAspect)
+        {
+            destH = bh;
+            destW = (int)(bh * targetAspect);
+        }
+        else
+        {
+            destW = bw;
+            destH = (int)(bw / targetAspect);
+        }
+
+        int destX = (bw - destW) / 2;
+        int destY = (bh - destH) / 2;
+
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-        _spriteBatch.Draw(_virtualTarget, new Rectangle(0, 0, bw, bh), Color.White);
+        _spriteBatch.Draw(_virtualTarget, new Rectangle(destX, destY, destW, destH), Color.White);
         _spriteBatch.End();
         base.Draw(gameTime);
     }
