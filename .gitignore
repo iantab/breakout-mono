@@ -2,18 +2,22 @@
 bin/
 obj/
 
-# MonoGame Content Pipeline build artifacts
-Content/bin/
-Content/obj/
-
-# JetBrains Rider
-.idea/
-
-# Visual Studio / VS Code
+# IDE / editor
 .vs/
+.vscode/
+.idea/
 *.user
 *.suo
+*.userprefs
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
+
+# NuGet
+*.nupkg
+.nuget/
+packages/
+
+# Logs
+*.log
